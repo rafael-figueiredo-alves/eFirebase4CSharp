@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/rafael-figueiredo-alves/eFirebase4CSharp/blob/main/Imagens/eFirebase4c%23.png" width=75% height=75%>  
+<img src="https://github.com/rafael-figueiredo-alves/eFirebase4CSharp/blob/main/Imagens/eFirebase4c%23.png" width=65% height=65%>  
 </p>
 
 # eFirebase4CSharp
