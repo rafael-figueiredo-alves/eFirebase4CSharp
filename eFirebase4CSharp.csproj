@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>eFirebase4CSharp</Title>
+    <Authors>Rafael de Figueiredo Alves</Authors>
+    <Company>DevPegaus</Company>
+    <Description>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</Description>
+    <AssemblyVersion>0.0.1-alpha</AssemblyVersion>
+    <FileVersion>0.0.1-alpha</FileVersion>
+  </PropertyGroup>
+
+</Project>

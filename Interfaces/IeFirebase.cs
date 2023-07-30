@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace eFirebase4CSharp.Interfaces
+{
+    public interface IeFirebase
+    {
+        public string GetVersion();
+    }
+}
