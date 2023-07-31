@@ -9,8 +9,31 @@
     <Authors>Rafael de Figueiredo Alves</Authors>
     <Company>DevPegaus</Company>
     <Description>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</Description>
-    <AssemblyVersion>0.0.1-alpha</AssemblyVersion>
-    <FileVersion>0.0.1-alpha</FileVersion>
+    <AssemblyVersion>0.0.1</AssemblyVersion>
+    <FileVersion>0.0.1</FileVersion>
+    <PackageIcon></PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Firebase;CSharp;Realtime Database;Auth;Storage;eFirebase;backend;</PackageTags>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Imagens\Icon 128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

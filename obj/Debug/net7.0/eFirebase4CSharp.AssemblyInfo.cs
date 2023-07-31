@@ -15,10 +15,12 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute(@"O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.0.1")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.0.1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("eFirebase4CSharp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("eFirebase4CSharp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("0.0.1")]
+[assembly: System.Reflection.AssemblyMetadataAttribute("RepositoryUrl", "https://github.com/rafael-figueiredo-alves/eFirebase4CSharp")]
+[assembly: System.Resources.NeutralResourcesLanguageAttribute("pt-BR")]
 
 // Gerado pela classe WriteCodeFragment do MSBuild.
 
