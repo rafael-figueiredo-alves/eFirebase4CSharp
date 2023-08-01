@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eFirebase4CSharp.Interfaces
+namespace eFirebase4CSharp.Types
 {
-    public interface IeFirebaseAuthResponse
+    public enum eFirebaseOrderByKind
     {
+        obkKey, 
+        obkValue, 
+        obkPriority
     }
 }
