@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v7.0": {
-      "eFirebase4CSharp/1.0.0": {
+      "eFirebase4CSharp/0.0.1": {
         "runtime": {
           "eFirebase4CSharp.dll": {}
         }
@@ -14,7 +14,7 @@
     }
   },
   "libraries": {
-    "eFirebase4CSharp/1.0.0": {
+    "eFirebase4CSharp/0.0.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

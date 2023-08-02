@@ -6,6 +6,15 @@ namespace eFirebase4CSharp.Classes
 {
     public class eFirebaseRealTimeDB : IeFirebaseRealTimeDB, IeFirebaseRealtimeFilters
     {
+        private HttpClient _httpClient;
+        private string ProjectCode;
+
+        public eFirebaseRealTimeDB(HttpClient httpClient, string projectCode)
+        {
+            _httpClient = httpClient;
+            ProjectCode = projectCode;
+        }
+
         public IeFirebaseRealTimeDB AccessToken(string? Value = null)
         {
             throw new NotImplementedException();

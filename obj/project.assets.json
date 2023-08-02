@@ -12,7 +12,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "0.0.1",
     "restore": {
       "projectUniqueName": "C:\\MeusProjetos\\eFirebase4CSharp\\eFirebase4CSharp.csproj",
       "projectName": "eFirebase4CSharp",

@@ -5,6 +5,14 @@ namespace eFirebase4CSharp.Classes
 {
     internal class eFirebaseStorage : IeFirebaseStorage
     {
+        private HttpClient _httpClient;
+        private string ProjectCode;
+
+        public eFirebaseStorage(HttpClient httpClient, string projectCode) 
+        {
+            _httpClient = httpClient;
+            ProjectCode = projectCode;
+        }
         public IeFirebaseStorage FileName(string? value = null)
         {
             throw new NotImplementedException();
