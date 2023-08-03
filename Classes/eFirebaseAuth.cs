@@ -37,11 +37,24 @@ namespace eFirebase4CSharp.Classes
 
         public async Task<IeFirebaseAuthResponse> SignUpWithEmailPasswordAsync(string Email, string Password)
         {
-            SignUpBody body = new(Email, Password);
+            SignBody body = new(Email, Password);
 
             string Url = SignUp_URL + "?key=" + API_Key;
 
-            var Response = await _httpClient.PostAsJsonAsync<SignUpBody>(Url, body);
+            var Response = await _httpClient.PostAsJsonAsync<SignBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+        }
+
+        public async Task<IeFirebaseAuthResponse> SignInWithEmailPasswordAsync(string Email, string Password)
+        {
+            SignBody body = new(Email, Password);
+
+            string Url = SignIn_URL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<SignBody>(Url, body);
 
             var Content = await Response.Content.ReadAsStringAsync();
 
@@ -93,24 +106,19 @@ namespace eFirebase4CSharp.Classes
             throw new NotImplementedException();
         }
 
-        public Task<IeFirebaseAuthResponse> SignInWithEmailPasswordAsync(string Email, string Password)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<IeFirebaseAuthResponse> VerifyPasswordResetCodeAsync(string oobCode)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class SignUpBody
+    public class SignBody
     {
         public string email { get; set; }
         public string password { get; set; }
         public bool returnSecureToken { get; set; } = true;
 
-        public SignUpBody(string email, string password)
+        public SignBody(string email, string password)
         {
             this.email = email;
             this.password = password;

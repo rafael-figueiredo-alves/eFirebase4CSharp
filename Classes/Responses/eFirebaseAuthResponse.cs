@@ -32,8 +32,12 @@ namespace eFirebase4CSharp.Classes.Responses
             string ResponseContent = _content;
             ResponseStatusCode = _statusCode;
 
-            string ErrorMsg = string.Empty;
+            GetValuesFromJSON(ResponseContent);
+        }
 
+        private void GetValuesFromJSON(string ResponseContent)
+        {
+            #region Desserialização
             var vJSON = JsonObject.Parse(ResponseContent);
 
             JsonObject oJSON = (JsonObject)vJSON!;
@@ -43,9 +47,138 @@ namespace eFirebase4CSharp.Classes.Responses
             if (oJSON.TryGetPropertyValue("users", out aJSON))
             {
                 var Item = (JsonArray)aJSON!;
-                JsonObject _item = (JsonObject)aJSON!.First();
-
+                oJSON = (JsonObject)JsonObject.Parse(Item[0]!.ToJsonString())!;
             }
+            #endregion
+
+            JsonNode? Value;
+
+            #region Getting LastLoginAt field
+            oJSON.TryGetPropertyValue("lastLoginAt", out Value);
+            flastLoginAt = Value?.ToString();
+            #endregion
+
+            Value = null;
+
+            #region Getting CreatedAT field
+            oJSON.TryGetPropertyValue("createdAt", out Value);
+            fcreatedAt = Value?.ToString();
+            #endregion
+
+            Value = null;
+
+            #region Token field
+            oJSON.TryGetPropertyValue("idToken", out Value);
+            if (Value == null)
+            {
+                oJSON.TryGetPropertyValue("id_token", out Value);
+            }
+            fToken = Value?.ToString();
+            #endregion
+
+            Value = null;
+
+            #region RefreshToken field
+            oJSON.TryGetPropertyValue("refreshToken", out Value);
+            if (Value == null)
+            {
+                oJSON.TryGetPropertyValue("refresh_token", out Value);
+            }
+            fRefreshToken = Value?.ToString();
+            #endregion
+
+            Value = null;
+
+            #region UserID field
+            oJSON.TryGetPropertyValue("localId", out Value);
+            if (Value == null)
+            {
+                oJSON.TryGetPropertyValue("user_id", out Value);
+            }
+            fuID = Value?.ToString();
+            #endregion
+
+            Value = null;
+
+            #region ExpiresIN field
+            oJSON.TryGetPropertyValue("expiresIn", out Value);
+            if (Value == null)
+            {
+                oJSON.TryGetPropertyValue("expires_in", out Value);
+            }
+            if (Value != null)
+            {
+                fExpiresIn = Convert.ToInt32(Value?.ToString());
+            }
+            else
+            {
+                fExpiresIn = null;
+            }
+            #endregion
+
+            Value = null;
+
+            #region Getting Registered field
+            if (oJSON.TryGetPropertyValue("registered", out Value))
+            {
+                fRegistered = Convert.ToBoolean(Value!.ToString());
+            }
+            #endregion
+
+            Value = null;
+
+            #region Getting DisplayName field
+            if (oJSON.TryGetPropertyValue("displayName", out Value))
+            {
+                fDisplayName = Value?.ToString();
+            }
+            #endregion
+
+            Value = null;
+
+            #region Getting Email field
+            if (oJSON.TryGetPropertyValue("email", out Value))
+            {
+                femail = Value?.ToString();
+            }
+            #endregion
+
+            Value = null;
+
+            #region Getting photoUrl field
+            if (oJSON.TryGetPropertyValue("photoUrl", out Value))
+            {
+                fphotoURL = Value?.ToString();
+            }
+            #endregion
+
+            Value = null;
+
+            #region Getting emailVerified field
+            if (oJSON.TryGetPropertyValue("emailVerified", out Value))
+            {
+                fEmailVerified = Convert.ToBoolean(Value?.ToString());
+            }
+            #endregion
+
+            Value = null;
+
+            #region Tratamento de erros
+            string ErrorMsg = string.Empty;
+
+            if(oJSON.TryGetPropertyValue("", out Value))
+            {
+                JsonObject objError = (JsonObject)Value!;
+
+                Value = null;
+
+                if(objError.TryGetPropertyValue("message", out Value))
+                {
+                    ErrorMsg = Value!.ToString();
+                    fError = GetError(ErrorMsg);
+                }
+            }
+            #endregion
         }
 
         /// <summary>
