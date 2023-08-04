@@ -1,6 +1,7 @@
 ﻿using eFirebase4CSharp.Classes.Responses;
 using eFirebase4CSharp.Interfaces;
 using eFirebase4CSharp.Interfaces.Responses;
+using System;
 using System.Net.Http.Json;
 
 namespace eFirebase4CSharp.Classes
@@ -36,6 +37,21 @@ namespace eFirebase4CSharp.Classes
         }
 
         /// <summary>
+        /// Método que Executa a requisição
+        /// </summary>
+        /// <typeparam name="T">Tipo do corpo</typeparam>
+        /// <param name="url">url do endpoint</param>
+        /// <param name="body">Corpo da requisição</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ExecuteRequest<T>(string url, T body)
+        {
+            string Url = url + "?key=" + API_Key;
+            var Response = await _httpClient.PostAsJsonAsync<T>(Url, body);
+            var Content = await Response.Content.ReadAsStringAsync();
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+        }
+
+        /// <summary>
         /// Método usado para Registrar uma nova conta no Firebase AUth
         /// </summary>
         /// <param name="Email">E-mail para criar conta</param>
@@ -44,14 +60,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> SignUpWithEmailPasswordAsync(string Email, string Password)
         {
             SignBody body = new(Email, Password);
-
-            string Url = SignUp_URL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<SignBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<SignBody>(SignUp_URL, body);
         }
 
         /// <summary>
@@ -63,14 +72,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> SignInWithEmailPasswordAsync(string Email, string Password)
         {
             SignBody body = new(Email, Password);
-
-            string Url = SignIn_URL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<SignBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<SignBody>(SignIn_URL, body);
         }
 
         /// <summary>
@@ -81,14 +83,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> ExchangeRefreshToken4idTokenAsync(string RefreshToken)
         {
             RefreshTokenBody body = new(RefreshToken);
-
-            string Url = SecureToken_URL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<RefreshTokenBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<RefreshTokenBody>(SecureToken_URL, body);
         }
 
         /// <summary>
@@ -99,14 +94,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> GetProfileAsync(string Token)
         {
             TokenBody body = new(Token);
-
-            string Url = GetProfileURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<TokenBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<TokenBody>(GetProfileURL, body);
         }
 
         /// <summary>
@@ -117,14 +105,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> DeleteAccountAsync(string Token)
         {
             TokenBody body = new(Token);
-
-            string Url = DeleteAccountURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<TokenBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<TokenBody>(DeleteAccountURL, body);
         }
 
         /// <summary>
@@ -135,14 +116,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> SendEmailVerificationAsync(string Token)
         {
             VerifyEmailBody body = new(Token);
-
-            string Url = SendEmailVerURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<VerifyEmailBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<VerifyEmailBody>(SendEmailVerURL, body);
         }
 
         /// <summary>
@@ -153,14 +127,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> SendPasswordResetEmailAsync(string Email)
         {
             PasswordResetBody body = new(Email);
-
-            string Url = SendPassRestEmail + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<PasswordResetBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<PasswordResetBody>(SendPassRestEmail, body);
         }
 
         /// <summary>
@@ -173,14 +140,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> ChangeProfileAsync(string Token, string DisplayName, string PhotoURL)
         {
             ChangeProfileBody body = new(Token, DisplayName, PhotoURL);
-
-            string Url = UpdateProfileURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<ChangeProfileBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<ChangeProfileBody>(UpdateProfileURL, body);
         }
 
         /// <summary>
@@ -192,14 +152,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> ChangePasswordAsync(string Token, string newPassword)
         {
             ChangePasswordBody body = new(Token, newPassword);
-
-            string Url = ChangePasswordURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<ChangePasswordBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<ChangePasswordBody>(ChangePasswordURL, body);
         }
 
         /// <summary>
@@ -210,14 +163,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> ConfirmEmailVerificationAsync(string oobCode)
         {
             ConfirmEmailBody body = new(oobCode);
-
-            string Url = ChangePasswordURL + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<ConfirmEmailBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<ConfirmEmailBody>(ConfirmEmail, body);
         }
 
         /// <summary>
@@ -228,15 +174,8 @@ namespace eFirebase4CSharp.Classes
         /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
         public async Task<IeFirebaseAuthResponse> ConfirmPasswordResetAsync(string oobCode, string newPassword)
         {
-            ConfirmPasswordResetBody body = new(oobCode, newPassword);
-
-            string Url = PasswordReset + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<ConfirmPasswordResetBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            ConfirmPasswordResetBody body = new(oobCode, newPassword); 
+            return await ExecuteRequest<ConfirmPasswordResetBody>(PasswordReset, body);
         }
 
         /// <summary>
@@ -247,14 +186,7 @@ namespace eFirebase4CSharp.Classes
         public async Task<IeFirebaseAuthResponse> VerifyPasswordResetCodeAsync(string oobCode)
         {
             VerifyPassResetCodeBody body = new(oobCode);
-
-            string Url = PasswordReset + "?key=" + API_Key;
-
-            var Response = await _httpClient.PostAsJsonAsync<VerifyPassResetCodeBody>(Url, body);
-
-            var Content = await Response.Content.ReadAsStringAsync();
-
-            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return await ExecuteRequest<VerifyPassResetCodeBody>(PasswordReset, body);
         }
     }
 
