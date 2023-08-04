@@ -35,6 +35,12 @@ namespace eFirebase4CSharp.Classes
             API_Key = _API_Key;
         }
 
+        /// <summary>
+        /// Método usado para Registrar uma nova conta no Firebase AUth
+        /// </summary>
+        /// <param name="Email">E-mail para criar conta</param>
+        /// <param name="Password">Senha para criar e-mail</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
         public async Task<IeFirebaseAuthResponse> SignUpWithEmailPasswordAsync(string Email, string Password)
         {
             SignBody body = new(Email, Password);
@@ -48,6 +54,12 @@ namespace eFirebase4CSharp.Classes
             return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
+        /// <summary>
+        /// Método usado para realizar login na conta criada no Firebase Auth
+        /// </summary>
+        /// <param name="Email">E-mail para criar conta</param>
+        /// <param name="Password">Senha para criar e-mail</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
         public async Task<IeFirebaseAuthResponse> SignInWithEmailPasswordAsync(string Email, string Password)
         {
             SignBody body = new(Email, Password);
@@ -61,57 +73,192 @@ namespace eFirebase4CSharp.Classes
             return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> ChangePasswordAsync(string Token, string newPassword)
+        /// <summary>
+        /// Método utilizado para Atualizar o token usando o RefreshToken
+        /// </summary>
+        /// <param name="RefreshToken">RefreshToken fornecido ao se conectar</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ExchangeRefreshToken4idTokenAsync(string RefreshToken)
         {
-            throw new NotImplementedException();
+            RefreshTokenBody body = new(RefreshToken);
+
+            string Url = SecureToken_URL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<RefreshTokenBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> ChangeProfileAsync(string Token, string DisplayName, string PhotoURL)
+        /// <summary>
+        /// Método para obter informações do perfil de usuário na conta do Firebase Auth
+        /// </summary>
+        /// <param name="Token">Token fornecido ao se logar</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> GetProfileAsync(string Token)
         {
-            throw new NotImplementedException();
+            TokenBody body = new(Token);
+
+            string Url = GetProfileURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<TokenBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> ConfirmEmailVerificationAsync(string oobCode)
+        /// <summary>
+        /// Método para Apagar uma conta criada no Firebase Auth
+        /// </summary>
+        /// <param name="Token">Token recebido ao se logar</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> DeleteAccountAsync(string Token)
         {
-            throw new NotImplementedException();
+            TokenBody body = new(Token);
+
+            string Url = DeleteAccountURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<TokenBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> ConfirmPasswordResetAsync(string oobCode, string newPassword)
+        /// <summary>
+        /// Método para enviar e-mail de verificação de conta
+        /// </summary>
+        /// <param name="Token">Token obtido ao logar</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> SendEmailVerificationAsync(string Token)
         {
-            throw new NotImplementedException();
+            VerifyEmailBody body = new(Token);
+
+            string Url = SendEmailVerURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<VerifyEmailBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> DeleteAccountAsync(string Token)
+        /// <summary>
+        /// Método para enviar solicitação de Resetamento de senha por e-mail
+        /// </summary>
+        /// <param name="Email">E-mail para enviar Código de resetamento</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> SendPasswordResetEmailAsync(string Email)
         {
-            throw new NotImplementedException();
+            PasswordResetBody body = new(Email);
+
+            string Url = SendPassRestEmail + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<PasswordResetBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> ExchangeRefreshToken4idTokenAsync(string RefreshToken)
+        /// <summary>
+        /// Método para alterar/editar dados do Perfil da conta
+        /// </summary>
+        /// <param name="Token">Token obtido ao logar</param>
+        /// <param name="DisplayName">Nome quie é exibido pela conta</param>
+        /// <param name="PhotoURL">URL da foto de perfil</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ChangeProfileAsync(string Token, string DisplayName, string PhotoURL)
         {
-            throw new NotImplementedException();
+            ChangeProfileBody body = new(Token, DisplayName, PhotoURL);
+
+            string Url = UpdateProfileURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<ChangeProfileBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> GetProfileAsync(string Token)
+        /// <summary>
+        /// Método para realizar troca de senha
+        /// </summary>
+        /// <param name="Token">Token obtido ao logar</param>
+        /// <param name="newPassword">Nova senha</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ChangePasswordAsync(string Token, string newPassword)
         {
-            throw new NotImplementedException();
+            ChangePasswordBody body = new(Token, newPassword);
+
+            string Url = ChangePasswordURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<ChangePasswordBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> SendEmailVerificationAsync(string Token)
+        /// <summary>
+        /// Método para enviar o codigo de confirmação para verificação do E-mail
+        /// </summary>
+        /// <param name="oobCode">Código de verificação enviado para o e-mail</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ConfirmEmailVerificationAsync(string oobCode)
         {
-            throw new NotImplementedException();
+            ConfirmEmailBody body = new(oobCode);
+
+            string Url = ChangePasswordURL + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<ConfirmEmailBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> SendPasswordResetEmailAsync(string Email)
+        /// <summary>
+        /// Método para inserir código de confirmação de resetamento de senha e informar nova senha
+        /// </summary>
+        /// <param name="oobCode">Coódigo de confirmação enviado para o e-mail</param>
+        /// <param name="newPassword">Nova senha</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> ConfirmPasswordResetAsync(string oobCode, string newPassword)
         {
-            throw new NotImplementedException();
+            ConfirmPasswordResetBody body = new(oobCode, newPassword);
+
+            string Url = PasswordReset + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<ConfirmPasswordResetBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
 
-        public Task<IeFirebaseAuthResponse> VerifyPasswordResetCodeAsync(string oobCode)
+        /// <summary>
+        /// Método para verificar/validar código de confirmação de resetamento de senha
+        /// </summary>
+        /// <param name="oobCode">Coódigo de confirmação enviado para o e-mail</param>
+        /// <returns>Retorna instância de IeFirebaseAuthResponse</returns>
+        public async Task<IeFirebaseAuthResponse> VerifyPasswordResetCodeAsync(string oobCode)
         {
-            throw new NotImplementedException();
+            VerifyPassResetCodeBody body = new(oobCode);
+
+            string Url = PasswordReset + "?key=" + API_Key;
+
+            var Response = await _httpClient.PostAsJsonAsync<VerifyPassResetCodeBody>(Url, body);
+
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseAuthResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
     }
 
+    #region Classes Body das requisições
     public class SignBody
     {
         public string email { get; set; }
@@ -124,4 +271,113 @@ namespace eFirebase4CSharp.Classes
             this.password = password;
         }
     }
+
+    public class TokenBody
+    {
+        public string idToken { get; set; }
+
+        public TokenBody(string token)
+        {
+            idToken = token;
+        }
+    }
+
+    public class RefreshTokenBody
+    {
+        public string grant_type { get; set; }
+        public string refresh_token { get; set; }
+
+        public RefreshTokenBody(string refresh_token)
+        {
+            grant_type = "refresh_token";
+            this.refresh_token = refresh_token;
+        }
+    }
+
+    public class VerifyEmailBody
+    {
+        public string requestType { get; set; }
+        public string idToken { get; set; }
+
+        public VerifyEmailBody(string idToken)
+        {
+            requestType = "VERIFY_EMAIL";
+            this.idToken = idToken;
+        }
+    }
+
+    public class PasswordResetBody
+    {
+        public string requestType { get; set; }
+        public string email { get; set; }
+
+        public PasswordResetBody(string email)
+        {
+            requestType = "VERIFY_EMAIL";
+            this.email = email;
+        }
+    }
+
+    public class ChangeProfileBody
+    {
+        public string idToken { get; set; }
+        public string displayName { get; set; }
+        public string photoUrl { get; set; }
+        public bool returnSecureToken { get; set; }
+
+        public ChangeProfileBody(string idToken, string displayName, string photoUrl)
+        {
+            this.idToken = idToken;
+            this.displayName = displayName;
+            this.photoUrl = photoUrl;
+            returnSecureToken = true;
+        }
+    }
+
+    public class ChangePasswordBody
+    {
+        public string idToken { get; set; }
+        public string password { get; set; }
+        public bool returnSecureToken { get; set; }
+
+        public ChangePasswordBody(string idToken, string password)
+        {
+            this.idToken = idToken;
+            this.password = password;
+            returnSecureToken = true;
+        }
+    }
+
+    public class ConfirmPasswordResetBody
+    {
+        public string oobCode { get; set; }
+        public string newPassword { get; set; }
+
+        public ConfirmPasswordResetBody(string oobCode, string newPassword)
+        {
+            this.oobCode = oobCode;
+            this.newPassword = newPassword;
+        }
+    }
+
+    public class ConfirmEmailBody
+    {
+        public string oobCode { get; set; }
+
+        public ConfirmEmailBody(string oobCode)
+        {
+            this.oobCode = oobCode;
+        }
+    }
+
+    public class VerifyPassResetCodeBody
+    {
+        public string oobCode { get; set; }
+
+        public VerifyPassResetCodeBody(string oobCode)
+        {
+            this.oobCode = oobCode;
+        }
+    }
+    #endregion
 }
