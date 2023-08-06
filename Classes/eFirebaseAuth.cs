@@ -245,7 +245,7 @@ namespace eFirebase4CSharp.Classes
 
         public PasswordResetBody(string email)
         {
-            requestType = "VERIFY_EMAIL";
+            requestType = "PASSWORD_RESET";
             this.email = email;
         }
     }
