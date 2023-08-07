@@ -166,7 +166,7 @@ namespace eFirebase4CSharp.Classes.Responses
             #region Tratamento de erros
             string ErrorMsg = string.Empty;
 
-            if(oJSON.TryGetPropertyValue("", out Value))
+            if(oJSON.TryGetPropertyValue("error", out Value))
             {
                 JsonObject objError = (JsonObject)Value!;
 
@@ -279,7 +279,14 @@ namespace eFirebase4CSharp.Classes.Responses
         }
         public string? CreatedAt()
         {
-            return fcreatedAt ?? string.Empty;
+            if(string.IsNullOrEmpty(fcreatedAt))
+            {
+                return null;
+            }
+            else
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt32(fcreatedAt!.Remove(fcreatedAt.Length - 3))).LocalDateTime.ToString();
+            }
         }
 
         public string? DisplayName()
@@ -309,7 +316,14 @@ namespace eFirebase4CSharp.Classes.Responses
 
         public string? LastLoginAt()
         {
-            return flastLoginAt ?? string.Empty;
+            if (string.IsNullOrEmpty(flastLoginAt))
+            {
+                return null;
+            }
+            else
+            {
+                return DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt32(flastLoginAt!.Remove(flastLoginAt.Length - 3))).LocalDateTime.ToString();
+            }
         }
 
         public string? PhotoUrl()
