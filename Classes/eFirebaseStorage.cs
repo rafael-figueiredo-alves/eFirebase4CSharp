@@ -1,5 +1,8 @@
 ﻿using eFirebase4CSharp.Interfaces;
 using eFirebase4CSharp.Interfaces.Responses;
+using System.Net.Http.Json;
+using System;
+using eFirebase4CSharp.Classes.Responses;
 
 namespace eFirebase4CSharp.Classes
 {
@@ -97,9 +100,28 @@ namespace eFirebase4CSharp.Classes
         /// </summary>
         /// <param name="AuthToken">Token de autenticação</param>
         /// <returns>Resposta da requisição</returns>
-        public Task<IeFirebaseStorageResponse> SendAsync(string? AuthToken = null)
+        public async Task<IeFirebaseStorageResponse> SendAsync(string? AuthToken = null)
         {
-            throw new NotImplementedException();
+            fContentType = GetContentType(fFilename);
+
+            string fURL = StorageURL + ProjectCode + SuffixURL + fFolders + Path.GetFileName(fFilename);
+
+            if (!string.IsNullOrEmpty(AuthToken))
+            {
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + AuthToken);
+            }
+
+            var Response = await _httpClient.PostAsync(fURL, new MultipartFormDataContent
+            {
+                {
+                    new StreamContent(System.IO.File.OpenRead(fFilename)), "File"
+                }
+            });
+            
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseStorageResponse(Content, Convert.ToInt32(Response.StatusCode));
         }
     }
 }
