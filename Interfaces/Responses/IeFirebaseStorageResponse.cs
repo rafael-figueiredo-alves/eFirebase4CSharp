@@ -4,5 +4,6 @@
     {
         public string? Link();
         public int? StatusCode();
+        public string? ErrorMessage();
     }
 }

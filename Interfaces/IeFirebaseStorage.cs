@@ -6,6 +6,8 @@ namespace eFirebase4CSharp.Interfaces
     {
         public IeFirebaseStorage Folder(string path);
         public IeFirebaseStorage FileName(string value);
+
+        public IeFirebaseStorage Content(Stream value);
         public Task<IeFirebaseStorageResponse> SendAsync(string? AuthToken = null);
     }
 }

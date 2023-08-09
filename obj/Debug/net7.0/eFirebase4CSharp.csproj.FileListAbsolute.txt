@@ -1,7 +1,6 @@
 C:\MeusProjetos\eFirebase4CSharp\bin\Debug\net7.0\eFirebase4CSharp.deps.json
 C:\MeusProjetos\eFirebase4CSharp\bin\Debug\net7.0\eFirebase4CSharp.dll
 C:\MeusProjetos\eFirebase4CSharp\bin\Debug\net7.0\eFirebase4CSharp.pdb
-C:\MeusProjetos\eFirebase4CSharp\obj\Debug\net7.0\eFirebase4CSharp.csproj.AssemblyReference.cache
 C:\MeusProjetos\eFirebase4CSharp\obj\Debug\net7.0\eFirebase4CSharp.GeneratedMSBuildEditorConfig.editorconfig
 C:\MeusProjetos\eFirebase4CSharp\obj\Debug\net7.0\eFirebase4CSharp.AssemblyInfoInputs.cache
 C:\MeusProjetos\eFirebase4CSharp\obj\Debug\net7.0\eFirebase4CSharp.AssemblyInfo.cs

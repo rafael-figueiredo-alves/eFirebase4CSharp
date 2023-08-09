@@ -18,6 +18,7 @@ namespace eFirebase4CSharp.Classes
         private string fFolders;
         private string fFilename;
         private string fContentType;
+        private Stream fContent;
 
         /// <summary>
         /// Método construtor
@@ -96,6 +97,17 @@ namespace eFirebase4CSharp.Classes
         }
 
         /// <summary>
+        /// Pega stream do arquivo a enviar
+        /// </summary>
+        /// <param name="value">Stream com conteúdo do arquivo</param>
+        /// <returns>Instância da própria interface</returns>
+        public IeFirebaseStorage Content(Stream value)
+        {
+            fContent = value;
+            return this;
+        }
+
+        /// <summary>
         /// Método de envio do arquivo para o storage
         /// </summary>
         /// <param name="AuthToken">Token de autenticação</param>
@@ -106,22 +118,19 @@ namespace eFirebase4CSharp.Classes
 
             string fURL = StorageURL + ProjectCode + SuffixURL + fFolders + Path.GetFileName(fFilename);
 
+            StreamContent content = new(fContent);
+            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(fContentType);
+
             if (!string.IsNullOrEmpty(AuthToken))
             {
-                _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + AuthToken);
             }
 
-            var Response = await _httpClient.PostAsync(fURL, new MultipartFormDataContent
-            {
-                {
-                    new StreamContent(System.IO.File.OpenRead(fFilename)), "File"
-                }
-            });
+            var Response = await _httpClient.PostAsync(fURL, content);
             
             var Content = await Response.Content.ReadAsStringAsync();
 
-            return new eFirebaseStorageResponse(Content, Convert.ToInt32(Response.StatusCode));
+            return new eFirebaseStorageResponse(Content, fURL, Convert.ToInt32(Response.StatusCode));
         }
     }
 }
