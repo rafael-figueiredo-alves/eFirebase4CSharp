@@ -1,28 +1,52 @@
 ﻿using eFirebase4CSharp.Interfaces;
 using eFirebase4CSharp.Interfaces.Responses;
 using eFirebase4CSharp.Types;
+using System.ComponentModel.DataAnnotations;
 
 namespace eFirebase4CSharp.Classes
 {
     public class eFirebaseRealTimeDB : IeFirebaseRealTimeDB, IeFirebaseRealtimeFilters
     {
+        const string Url_base = ".firebaseio.com/";
+
         private HttpClient _httpClient;
-        private string ProjectCode;
+        //private string ProjectCode;
+        private string fUrl = string.Empty;
+        private string fToken =  string.Empty;
+        private string fCollection =  string.Empty;
+        private string fEndpoint =  string.Empty;
+        private string fOrderBy =  string.Empty;
+        private string fstartAt =  string.Empty;
+        private string fendAt =  string.Empty;
+        private string fequalTo =  string.Empty;
+        private string flimitToFirst =  string.Empty;
+        private string flimittoLast =  string.Empty;
 
         public eFirebaseRealTimeDB(HttpClient httpClient, string projectCode)
         {
             _httpClient = httpClient;
-            ProjectCode = projectCode;
+
+            fUrl = "https://" + projectCode + Url_base;
         }
 
         public IeFirebaseRealTimeDB AccessToken(string? Value = null)
         {
-            throw new NotImplementedException();
+            if(!string.IsNullOrEmpty(Value))
+            {
+                fToken = "auth=" + Value;
+            }
+            return this;
         }
 
         public IeFirebaseRealTimeDB Collection(string? Collection = null)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(Collection))
+            {
+                fCollection = Collection;
+                fCollection = fCollection.Replace("/", "");
+                fCollection = fCollection.Replace(@"\", "");
+            }
+            return this;
         }
 
         public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body)

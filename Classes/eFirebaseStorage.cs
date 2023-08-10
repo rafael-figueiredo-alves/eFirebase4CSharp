@@ -19,7 +19,7 @@ namespace eFirebase4CSharp.Classes
         private string fFolders;
         private string fFilename;
         private string fContentType;
-        private Stream fContent;
+        private Stream? fContent;
 
         /// <summary>
         /// Método construtor
