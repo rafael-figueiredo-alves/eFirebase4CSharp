@@ -3,6 +3,7 @@ using eFirebase4CSharp.Interfaces.Responses;
 using System.Net.Http.Json;
 using System;
 using eFirebase4CSharp.Classes.Responses;
+using System.Net.Http.Headers;
 
 namespace eFirebase4CSharp.Classes
 {
@@ -123,7 +124,8 @@ namespace eFirebase4CSharp.Classes
 
             if (!string.IsNullOrEmpty(AuthToken))
             {
-                _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + AuthToken);
+                _httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", AuthToken);
             }
 
             var Response = await _httpClient.PostAsync(fURL, content);
