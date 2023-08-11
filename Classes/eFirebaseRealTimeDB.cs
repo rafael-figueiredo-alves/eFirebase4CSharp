@@ -7,21 +7,27 @@ namespace eFirebase4CSharp.Classes
 {
     public class eFirebaseRealTimeDB : IeFirebaseRealTimeDB, IeFirebaseRealtimeFilters
     {
+        #region Variáveis e Constante
         const string Url_base = ".firebaseio.com/";
 
         private HttpClient _httpClient;
-        //private string ProjectCode;
         private string fUrl = string.Empty;
-        private string fToken =  string.Empty;
-        private string fCollection =  string.Empty;
-        private string fEndpoint =  string.Empty;
-        private string fOrderBy =  string.Empty;
-        private string fstartAt =  string.Empty;
-        private string fendAt =  string.Empty;
-        private string fequalTo =  string.Empty;
-        private string flimitToFirst =  string.Empty;
-        private string flimittoLast =  string.Empty;
+        private string fToken = string.Empty;
+        private string fCollection = string.Empty;
+        private string fEndpoint = string.Empty;
+        private string fOrderBy = string.Empty;
+        private string fstartAt = string.Empty;
+        private string fendAt = string.Empty;
+        private string fequalTo = string.Empty;
+        private string flimitToFirst = string.Empty;
+        private string flimittoLast = string.Empty;
+        #endregion
 
+        /// <summary>
+        /// Método construtor
+        /// </summary>
+        /// <param name="httpClient">Injeção de HttpClient para operações Rest</param>
+        /// <param name="projectCode">ID do Projeto Firebase</param>
         public eFirebaseRealTimeDB(HttpClient httpClient, string projectCode)
         {
             _httpClient = httpClient;
@@ -29,15 +35,26 @@ namespace eFirebase4CSharp.Classes
             fUrl = "https://" + projectCode + Url_base;
         }
 
+        #region Métodos de construção da chamada
+        /// <summary>
+        /// Informar o Token para acesso a endpoints com regra de autenticação/autorização
+        /// </summary>
+        /// <param name="Value">Token recebido do Firebase Auth</param>
+        /// <returns>Interface para encadear métodos</returns>
         public IeFirebaseRealTimeDB AccessToken(string? Value = null)
         {
-            if(!string.IsNullOrEmpty(Value))
+            if (!string.IsNullOrEmpty(Value))
             {
                 fToken = "auth=" + Value;
             }
             return this;
         }
 
+        /// <summary>
+        /// Informar coleção a manipular, será adicionado ao termo o ".json" necessário para consumo da mesma
+        /// </summary>
+        /// <param name="Collection">Coleção a consultar/agir</param>
+        /// <returns>Interface para encadear métodos</returns>
         public IeFirebaseRealTimeDB Collection(string? Collection = null)
         {
             if (!string.IsNullOrEmpty(Collection))
@@ -49,51 +66,62 @@ namespace eFirebase4CSharp.Classes
             return this;
         }
 
-        public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IeFirebaseRealtimeResponse> DeleteRegister(string? Id = null, string? ETag = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IeFirebaseRealtimeFilters EndAt(string? Value = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IeFirebaseRealtimeFilters EndAt(int? Value = null)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Informar caminho/endpoint onde está coleção a consumir
+        /// </summary>
+        /// <param name="Value">Endpoint que deseja consumir</param>
+        /// <returns>Interface para encadear métodos</returns>
         public IeFirebaseRealTimeDB Endpoint(string? Value = null)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(Value))
+            {
+                fEndpoint = Value;
+                fEndpoint = fEndpoint.Replace("/", "");
+                fEndpoint = fEndpoint.Replace(@"\", "");
+            }
+            return this;
+        }
+        #endregion
+
+        #region Métodos de Suporte/Apoio
+        /// <summary>
+        /// Método de Apoio para Montar URL do serviço sem filtros
+        /// </summary>
+        /// <returns>URL completa sem filtros (apenas Token se tiver)</returns>
+        private string MountUrl()
+        {
+           //Implementar
         }
 
-        public IeFirebaseRealtimeFilters EqualTo(string? Value = null)
+        /// <summary>
+        /// Método de Apoio para Montar URL do serviço com filtros
+        /// </summary>
+        /// <returns>URL completa com filtros (e Token se tiver)</returns>
+        private string MountUrlSearch()
+        {
+            //Implementar
+        }
+
+        #endregion
+
+        #region Métodos de Leitura com e sem filtros
+        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync()
         {
             throw new NotImplementedException();
         }
 
-        public IeFirebaseRealtimeFilters EqualTo(int? Value = null)
+        #region Métodos para efetuar leitura com filtros
+        public IeFirebaseRealtimeFilters Read()
+        {
+            return this;
+        }
+
+        public Task<IeFirebaseRealtimeResponse> SearchAsync()
         {
             throw new NotImplementedException();
         }
 
-        public IeFirebaseRealtimeFilters LimitToFirst(int? Value = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IeFirebaseRealtimeFilters LimitToLast(int? Value = null)
-        {
-            throw new NotImplementedException();
-        }
-
+        //Utilizar orderBy para indicar campo/nó a pesquisar
         public IeFirebaseRealtimeFilters OrderBy(eFirebaseOrderByKind? Kind = null)
         {
             throw new NotImplementedException();
@@ -103,22 +131,22 @@ namespace eFirebase4CSharp.Classes
         {
             throw new NotImplementedException();
         }
+        //--------------------------------------------------------------------------
 
-        public IeFirebaseRealtimeFilters Read()
+        //----------------Filtro IGUAL A--------------------------------------------
+        public IeFirebaseRealtimeFilters EqualTo(string? Value = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync()
+        public IeFirebaseRealtimeFilters EqualTo(int? Value = null)
         {
             throw new NotImplementedException();
         }
+        //---------------------------------------------------------------------------
 
-        public Task<IeFirebaseRealtimeResponse> SearchAsync()
-        {
-            throw new NotImplementedException();
-        }
 
+        //----------------Filtro INICIA COM (= A MAIOR OU IGUAL A)-------------------
         public IeFirebaseRealtimeFilters StartAt(string? Value = null)
         {
             throw new NotImplementedException();
@@ -128,15 +156,80 @@ namespace eFirebase4CSharp.Classes
         {
             throw new NotImplementedException();
         }
+        //---------------------------------------------------------------------------
 
+        //----------------Filtro TERMINA COM (= A MENOR OU IGUAL A)------------------
+        public IeFirebaseRealtimeFilters EndAt(string? Value = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IeFirebaseRealtimeFilters EndAt(int? Value = null)
+        {
+            throw new NotImplementedException();
+        }
+        //----------------------------------------------------------------------------
+
+
+        //----------Métodos para limitar resultados--------------------------------
+        public IeFirebaseRealtimeFilters LimitToFirst(int? Value = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IeFirebaseRealtimeFilters LimitToLast(int? Value = null)
+        {
+            throw new NotImplementedException();
+        }
+        //--------------------------------------------------------------------------
+        #endregion
+        #endregion
+
+        #region Métodos operacionais: Salvar, Atualizar, Excluir e Inserir (CRUD)
+        /// <summary>
+        /// Método para atualizar os dados do registro
+        /// </summary>
+        /// <typeparam name="T">Tipo de objeto a enviar</typeparam>
+        /// <param name="Body">Objeto a ser enviado</param>
+        /// <returns>Interface com dados da resposta da requisição</returns>
         public Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Método para atualizar/sobreescrever ou mesmo escrever (incluir) os dados do registro
+        /// </summary>
+        /// <typeparam name="T">Tipo de objeto a enviar</typeparam>
+        /// <param name="Body">Objeto a ser enviado</param>
+        /// <param name="ETag">Identificação do recurso para confirmar se ainda existe</param>
+        /// <returns>Interface com dados da resposta da requisição</returns>
         public Task<IeFirebaseRealtimeResponse> WriteRegister<T>(T Body, string? ETag = null)
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Método para criar/incluir/inserir registro no banco de dados
+        /// </summary>
+        /// <typeparam name="T">Tipo de objeto a enviar</typeparam>
+        /// <param name="Body">Objeto a ser enviado</param>
+        /// <returns>Interface com dados da resposta da requisição</returns>
+        public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Método usado para apagar registro da base de dados
+        /// </summary>
+        /// <param name="Id">Id do registro a ser apagado (ou pode ser passado a coleção)</param>
+        /// <param name="ETag">Identificação do recurso para confirmar se ainda existe</param>
+        /// <returns>Interface com dados da resposta da requisiçã</returns>
+        public Task<IeFirebaseRealtimeResponse> DeleteRegister(string? Id = null, string? ETag = null)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
