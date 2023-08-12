@@ -8,7 +8,7 @@ namespace eFirebase4CSharp.Interfaces
         public IeFirebaseRealTimeDB Endpoint(string? Value = null);
         public IeFirebaseRealTimeDB Collection(string? Collection = null);
         public IeFirebaseRealtimeFilters Read();
-        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync();
+        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync(string? id = null);
         public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body);
         public Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body);
         public Task<IeFirebaseRealtimeResponse> WriteRegister<T>(T Body, string? ETag = null);

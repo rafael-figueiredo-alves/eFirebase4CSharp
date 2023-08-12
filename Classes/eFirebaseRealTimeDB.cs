@@ -76,8 +76,15 @@ namespace eFirebase4CSharp.Classes
             if (!string.IsNullOrEmpty(Value))
             {
                 fEndpoint = Value;
-                fEndpoint = fEndpoint.Replace("/", "");
-                fEndpoint = fEndpoint.Replace(@"\", "");
+                if(fEndpoint.StartsWith('/'))
+                {
+                    fEndpoint = fEndpoint.Remove(0, 1);
+                }
+
+                if(!fEndpoint.EndsWith('/'))
+                {
+                    fEndpoint += "/";
+                }
             }
             return this;
         }
@@ -90,7 +97,14 @@ namespace eFirebase4CSharp.Classes
         /// <returns>URL completa sem filtros (apenas Token se tiver)</returns>
         private string MountUrl()
         {
-           //Implementar
+            string _URL = fUrl + fEndpoint + fCollection;
+
+            if(!string.IsNullOrEmpty(fToken))
+            {
+                _URL = _URL + "?" + fToken;
+            }
+
+            return _URL;
         }
 
         /// <summary>
@@ -99,13 +113,63 @@ namespace eFirebase4CSharp.Classes
         /// <returns>URL completa com filtros (e Token se tiver)</returns>
         private string MountUrlSearch()
         {
-            //Implementar
-        }
+            string _URLSearch = string.Empty;
+            if(string.IsNullOrEmpty(fToken))
+            {
+                _URLSearch = "?";
+            }
+            else
+            {
+                _URLSearch = "&";
+            }
 
+            if(!string.IsNullOrEmpty(fOrderBy))
+            {
+                _URLSearch += fOrderBy;
+
+                if(!string.IsNullOrEmpty(fstartAt))
+                {
+                    _URLSearch += "&" + fstartAt;
+
+                    if(!string.IsNullOrEmpty(fendAt))
+                    {
+                        _URLSearch += "&" + fendAt;
+                    }
+                }
+
+                if(!string.IsNullOrEmpty(fendAt))
+                {
+                    _URLSearch += "&" + fendAt;
+                }
+
+                if(!string.IsNullOrEmpty(fequalTo))
+                {
+                    _URLSearch += "&" + fequalTo;
+                }
+
+                if(!string.IsNullOrEmpty(flimitToFirst))
+                {
+                    _URLSearch += "&" + flimitToFirst;
+                    flimittoLast = string.Empty;
+                }
+
+                if(!string.IsNullOrEmpty(flimittoLast))
+                {
+                    _URLSearch += "&" + flimittoLast;
+                }
+            }
+
+            if((_URLSearch == "?") || (_URLSearch == "&"))
+            {
+                _URLSearch = string.Empty;
+            }
+
+            return _URLSearch;
+        }
         #endregion
 
         #region Métodos de Leitura com e sem filtros
-        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync()
+        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync(string? id = null)
         {
             throw new NotImplementedException();
         }
@@ -124,24 +188,55 @@ namespace eFirebase4CSharp.Classes
         //Utilizar orderBy para indicar campo/nó a pesquisar
         public IeFirebaseRealtimeFilters OrderBy(eFirebaseOrderByKind? Kind = null)
         {
-            throw new NotImplementedException();
+            if(Kind != null)
+            {
+                switch(Kind)
+                {
+                    case eFirebaseOrderByKind.obkKey:
+                        fOrderBy = @"orderBy=""$key""";
+                        break;
+                    case eFirebaseOrderByKind.obkValue:
+                        fOrderBy = @"orderBy=""$value""";
+                        break;
+                    case eFirebaseOrderByKind.obkPriority:
+                        fOrderBy = @"orderBy=""$priority""";
+                        break;
+                    default:
+                        fOrderBy = @"orderBy=""$key""";
+                        break;
+                }
+            }
+
+            return this;
         }
 
         public IeFirebaseRealtimeFilters OrderBy(string? Fields = null)
         {
-            throw new NotImplementedException();
+            if(Fields != null)
+            {
+                fOrderBy = $"orderBy=\"{Fields}\"";
+            }
+            return this;
         }
         //--------------------------------------------------------------------------
 
         //----------------Filtro IGUAL A--------------------------------------------
         public IeFirebaseRealtimeFilters EqualTo(string? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fequalTo = $"equalTo=\"{Value}\"";
+            }
+            return this;
         }
 
         public IeFirebaseRealtimeFilters EqualTo(int? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fequalTo = $"equalTo={Value}";
+            }
+            return this;
         }
         //---------------------------------------------------------------------------
 
@@ -149,24 +244,40 @@ namespace eFirebase4CSharp.Classes
         //----------------Filtro INICIA COM (= A MAIOR OU IGUAL A)-------------------
         public IeFirebaseRealtimeFilters StartAt(string? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fstartAt = $"startAt=\"{Value}\"";
+            }
+            return this;
         }
 
         public IeFirebaseRealtimeFilters StartAt(int? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fstartAt = $"startAt={Value}";
+            }
+            return this;
         }
         //---------------------------------------------------------------------------
 
         //----------------Filtro TERMINA COM (= A MENOR OU IGUAL A)------------------
         public IeFirebaseRealtimeFilters EndAt(string? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fendAt = $"endAt=\"{Value}\"";
+            }
+            return this;
         }
 
         public IeFirebaseRealtimeFilters EndAt(int? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                fendAt = $"endAt={Value}";
+            }
+            return this;
         }
         //----------------------------------------------------------------------------
 
@@ -174,15 +285,24 @@ namespace eFirebase4CSharp.Classes
         //----------Métodos para limitar resultados--------------------------------
         public IeFirebaseRealtimeFilters LimitToFirst(int? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                flimitToFirst = $"limitToFirst={Value}";
+            }
+            return this;
         }
 
         public IeFirebaseRealtimeFilters LimitToLast(int? Value = null)
         {
-            throw new NotImplementedException();
+            if (Value != null)
+            {
+                flimittoLast = $"limitToLast={Value}";
+            }
+            return this;
         }
         //--------------------------------------------------------------------------
         #endregion
+
         #endregion
 
         #region Métodos operacionais: Salvar, Atualizar, Excluir e Inserir (CRUD)
