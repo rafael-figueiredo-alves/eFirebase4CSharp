@@ -1,7 +1,9 @@
-﻿using eFirebase4CSharp.Interfaces;
+﻿using eFirebase4CSharp.Classes.Responses;
+using eFirebase4CSharp.Interfaces;
 using eFirebase4CSharp.Interfaces.Responses;
 using eFirebase4CSharp.Types;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Json;
 
 namespace eFirebase4CSharp.Classes
 {
@@ -60,8 +62,15 @@ namespace eFirebase4CSharp.Classes
             if (!string.IsNullOrEmpty(Collection))
             {
                 fCollection = Collection;
-                fCollection = fCollection.Replace("/", "");
-                fCollection = fCollection.Replace(@"\", "");
+                if (fCollection.StartsWith('/'))
+                {
+                    fCollection = fCollection.Remove(0, 1);
+                }
+
+                if (fCollection.EndsWith('/'))
+                {
+                    fCollection = fCollection.Remove(fCollection.Length - 1, 1);
+                }
             }
             return this;
         }
@@ -169,9 +178,26 @@ namespace eFirebase4CSharp.Classes
         #endregion
 
         #region Métodos de Leitura com e sem filtros
-        public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync(string? id = null)
+        public async Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync(string? id = null)
         {
-            throw new NotImplementedException();
+            if(!string.IsNullOrEmpty(id))
+            {
+                fCollection += "/" + id + ".json";
+            }
+            else
+            {
+                fCollection += ".json";
+            }
+
+            string cUrl = MountUrl();
+
+            _httpClient.DefaultRequestHeaders.Add("X-Firebase-ETag", "true");
+
+            var Response = await _httpClient.GetAsync(cUrl);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            string? _ETag = Response.Headers.GetValues("ETag").FirstOrDefault();
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), _ETag);
         }
 
         #region Métodos para efetuar leitura com filtros
@@ -180,9 +206,16 @@ namespace eFirebase4CSharp.Classes
             return this;
         }
 
-        public Task<IeFirebaseRealtimeResponse> SearchAsync()
+        public async Task<IeFirebaseRealtimeResponse> SearchAsync()
         {
-            throw new NotImplementedException();
+            fCollection += ".json";
+
+            string cUrl = MountUrl() + MountUrlSearch();
+
+            var Response = await _httpClient.GetAsync(cUrl);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), null);
         }
 
         //Utilizar orderBy para indicar campo/nó a pesquisar
@@ -312,9 +345,23 @@ namespace eFirebase4CSharp.Classes
         /// <typeparam name="T">Tipo de objeto a enviar</typeparam>
         /// <param name="Body">Objeto a ser enviado</param>
         /// <returns>Interface com dados da resposta da requisição</returns>
-        public Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body)
+        public async Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body, string? id = null)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(id))
+            {
+                fCollection += "/" + id + ".json";
+            }
+            else
+            {
+                fCollection += ".json";
+            }
+
+            string cUrl = MountUrl();
+
+            var Response = await _httpClient.PatchAsJsonAsync<T>(cUrl, Body);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), null);
         }
 
         /// <summary>
@@ -324,9 +371,22 @@ namespace eFirebase4CSharp.Classes
         /// <param name="Body">Objeto a ser enviado</param>
         /// <param name="ETag">Identificação do recurso para confirmar se ainda existe</param>
         /// <returns>Interface com dados da resposta da requisição</returns>
-        public Task<IeFirebaseRealtimeResponse> WriteRegister<T>(T Body, string? ETag = null)
+        public async Task<IeFirebaseRealtimeResponse> WriteRegister<T>(T Body, string? ETag = null)
         {
-            throw new NotImplementedException();
+            fCollection += ".json";
+
+            string cUrl = MountUrl();
+
+            if (!string.IsNullOrEmpty(ETag))
+            {
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("if-match", "\"" + ETag + "\"");
+            }
+
+            var Response = await _httpClient.PutAsJsonAsync<T>(cUrl, Body);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            string? _ETag = Response.Headers.GetValues("ETag").FirstOrDefault();
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), _ETag);
         }
 
         /// <summary>
@@ -335,9 +395,19 @@ namespace eFirebase4CSharp.Classes
         /// <typeparam name="T">Tipo de objeto a enviar</typeparam>
         /// <param name="Body">Objeto a ser enviado</param>
         /// <returns>Interface com dados da resposta da requisição</returns>
-        public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body)
+        public async Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body)
         {
-            throw new NotImplementedException();
+            fCollection += ".json";
+
+            string cUrl = MountUrl();
+
+            _httpClient.DefaultRequestHeaders.Add("X-Firebase-ETag", "true");
+
+            var Response = await _httpClient.PostAsJsonAsync<T>(cUrl, Body);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            string? _ETag = Response.Headers.GetValues("ETag").FirstOrDefault();
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), _ETag);
         }
 
         /// <summary>
@@ -346,9 +416,28 @@ namespace eFirebase4CSharp.Classes
         /// <param name="Id">Id do registro a ser apagado (ou pode ser passado a coleção)</param>
         /// <param name="ETag">Identificação do recurso para confirmar se ainda existe</param>
         /// <returns>Interface com dados da resposta da requisiçã</returns>
-        public Task<IeFirebaseRealtimeResponse> DeleteRegister(string? Id = null, string? ETag = null)
+        public async Task<IeFirebaseRealtimeResponse> DeleteRegister(string? Id = null, string? ETag = null)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(Id))
+            {
+                fCollection += "/" + Id + ".json";
+            }
+            else
+            {
+                fCollection += ".json";
+            }
+
+            string cUrl = MountUrl();
+
+            if(!string.IsNullOrEmpty(ETag)) 
+            {
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation("if-match", "\"" + ETag + "\"");
+            }
+
+            var Response = await _httpClient.DeleteAsync(cUrl);
+            var Content = await Response.Content.ReadAsStringAsync();
+
+            return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), null);
         }
         #endregion
     }

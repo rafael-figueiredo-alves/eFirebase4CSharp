@@ -12,10 +12,10 @@ namespace eFirebase4CSharp.Interfaces.Responses
     {
         public int? StatusCode();
         public string? ETag();
-        public string AsJSONstr();
-        public JsonObject AsJSONObj();
-        public JsonArray AsJSONArray();
-        public T AsObject<T>();
-        public IEnumerable<T> AsEnumerable<T>();
+        public string? AsJSONstr();
+        public JsonObject? AsJSONObj();
+        public JsonArray? AsJSONArray();
+        public T? AsObject<T>();
+        public IEnumerable<T>? AsEnumerable<T>();
     }
 }

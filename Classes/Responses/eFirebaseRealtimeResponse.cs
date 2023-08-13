@@ -1,43 +1,59 @@
 ﻿using eFirebase4CSharp.Interfaces.Responses;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace eFirebase4CSharp.Classes.Responses
 {
     public class eFirebaseRealtimeResponse : IeFirebaseRealtimeResponse
     {
-        public IEnumerable<T> AsEnumerable<T>()
+        #region Variables and Constants
+        private int fStatusCode { get; set; }
+        private string? fETag { get; set; }
+        private string fContent { get; set; }
+        #endregion
+
+        public eFirebaseRealtimeResponse(string _content, int _statusCode, string? ETag)
+        {
+            fContent = _content;
+            fStatusCode = _statusCode;
+            fETag = ETag;
+        }
+
+        public IEnumerable<T>? AsEnumerable<T>()
+        {
+            JsonArray? array = AsJSONArray();
+            string? SArray = array?.ToString();
+            return JsonSerializer.Deserialize<IEnumerable<T>>(SArray!);
+        }
+
+        public JsonArray? AsJSONArray()
         {
             throw new NotImplementedException();
         }
 
-        public JsonArray AsJSONArray()
+        public JsonObject? AsJSONObj()
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<JsonObject>(fContent);
         }
 
-        public JsonObject AsJSONObj()
+        public string? AsJSONstr()
         {
-            throw new NotImplementedException();
+            return fContent;
         }
 
-        public string AsJSONstr()
+        public T? AsObject<T>()
         {
-            throw new NotImplementedException();
-        }
-
-        public T AsObject<T>()
-        {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<T>(fContent);
         }
 
         public string? ETag()
         {
-            throw new NotImplementedException();
+            return fETag;
         }
 
         public int? StatusCode()
         {
-            throw new NotImplementedException();
+            return fStatusCode;
         }
     }
 }

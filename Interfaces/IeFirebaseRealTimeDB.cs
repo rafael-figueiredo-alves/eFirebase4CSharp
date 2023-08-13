@@ -10,7 +10,7 @@ namespace eFirebase4CSharp.Interfaces
         public IeFirebaseRealtimeFilters Read();
         public Task<IeFirebaseRealtimeResponse> ReadWithoutFiltersAsync(string? id = null);
         public Task<IeFirebaseRealtimeResponse> CreateRegister<T>(T Body);
-        public Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body);
+        public Task<IeFirebaseRealtimeResponse> UpdateRegister<T>(T Body, string? id = null);
         public Task<IeFirebaseRealtimeResponse> WriteRegister<T>(T Body, string? ETag = null);
         public Task<IeFirebaseRealtimeResponse> DeleteRegister(string? Id = null, string? ETag = null);
     }
