@@ -191,7 +191,12 @@ namespace eFirebase4CSharp.Classes
 
             string cUrl = MountUrl();
 
-            _httpClient.DefaultRequestHeaders.Add("X-Firebase-ETag", "true");
+            IEnumerable<string>? teste;
+            if(!_httpClient.DefaultRequestHeaders.TryGetValues("X-Firebase-ETag", out teste))
+            {
+                _httpClient.DefaultRequestHeaders.Add("X-Firebase-ETag", "true");
+            }
+            
 
             var Response = await _httpClient.GetAsync(cUrl);
             var Content = await Response.Content.ReadAsStringAsync();
