@@ -44,7 +44,22 @@ namespace eFirebase4CSharp.Classes.Responses
                         var Valor = JsonSerializer.Deserialize<JsonObject>((JsonObject)item.Value!, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All)) });
                         foreach (var subitem in Valor!)
                         {
-                            registro.Add(subitem.Key, subitem.Value!.ToJsonString().Replace("\"", "").Replace("\u0022", "\""));
+                            if(bool.TryParse(subitem.Value!.ToJsonString(), out var val))
+                            {
+                                registro.Add(subitem.Key, val);
+                            }
+                            else if(int.TryParse(subitem.Value!.ToJsonString(), out var valint))
+                            {
+                                registro.Add(subitem.Key, valint);
+                            }
+                            else if(double.TryParse(subitem.Value!.ToJsonString(), out var valdouble))
+                            {
+                                registro.Add(subitem.Key, valdouble);
+                            }
+                            else
+                            {
+                                registro.Add(subitem.Key, subitem.Value!.ToString().Replace("\"", "").Replace("\u0022", "\""));
+                            }
                         }
                         resultArray!.Add(registro);
                     }
