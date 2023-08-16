@@ -1,4 +1,5 @@
 ﻿using eFirebase4CSharp.Interfaces.Responses;
+using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -44,7 +45,15 @@ namespace eFirebase4CSharp.Classes.Responses
                         var Valor = JsonSerializer.Deserialize<JsonObject>((JsonObject)item.Value!, new JsonSerializerOptions { WriteIndented = true, Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All)) });
                         foreach (var subitem in Valor!)
                         {
-                            if(bool.TryParse(subitem.Value!.ToJsonString(), out var val))
+                            if(subitem.Value is JsonObject)
+                            {
+                                registro.Add(subitem.Key, JsonSerializer.Deserialize<JsonObject>((JsonObject)subitem.Value));
+                            }
+                            else if(subitem.Value is JsonArray) 
+                            {
+                                registro.Add(subitem.Key, JsonSerializer.Deserialize<JsonArray>((JsonArray)subitem.Value));
+                            }
+                            else if(bool.TryParse(subitem.Value!.ToJsonString(), out var val))
                             {
                                 registro.Add(subitem.Key, val);
                             }
@@ -52,7 +61,7 @@ namespace eFirebase4CSharp.Classes.Responses
                             {
                                 registro.Add(subitem.Key, valint);
                             }
-                            else if(double.TryParse(subitem.Value!.ToJsonString(), out var valdouble))
+                            else if(double.TryParse(subitem.Value!.ToJsonString().Replace(".", ","), out var valdouble))
                             {
                                 registro.Add(subitem.Key, valdouble);
                             }
