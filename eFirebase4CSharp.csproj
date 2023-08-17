@@ -9,9 +9,9 @@
     <Authors>Rafael de Figueiredo Alves</Authors>
     <Company>Rafael de Figueiredo Alves</Company>
     <Description>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</Description>
-    <AssemblyVersion>0.0.1</AssemblyVersion>
-    <FileVersion>0.0.1</FileVersion>
-    <PackageIcon></PackageIcon>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <PackageIcon>Imagens\eFirebase4CSharpIcon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -19,11 +19,16 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>False</SignAssembly>
-    <Version>0.0.1</Version>
+    <Version>1.0.1</Version>
     <PackageProjectUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</PackageProjectUrl>
+    <PackageReleaseNotes>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="Imagens\eFirebase4CSharpIcon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="Imagens\Icon 128.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

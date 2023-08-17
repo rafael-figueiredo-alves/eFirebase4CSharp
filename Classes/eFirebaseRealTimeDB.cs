@@ -390,7 +390,12 @@ namespace eFirebase4CSharp.Classes
             var Response = await _httpClient.PutAsJsonAsync<T>(cUrl, Body);
             var Content = await Response.Content.ReadAsStringAsync();
 
-            string? _ETag = Response.Headers.GetValues("ETag").FirstOrDefault();
+            IEnumerable<string>? Tags = new List<string>();
+            string? _ETag = null;
+            if (Response.Headers.TryGetValues("ETag", out Tags))
+            {
+                _ETag = Response.Headers.GetValues("ETag").FirstOrDefault();
+            }
             return new eFirebaseRealtimeResponse(Content, Convert.ToInt32(Response.StatusCode), _ETag);
         }
 

@@ -129,8 +129,7 @@ namespace eFirebase4CSharp.Classes
             }
 
             var Response = await _httpClient.PostAsync(fURL, content);
-            
-            var Content = await Response.Content.ReadAsStringAsync();
+            var Content = await Response.Content.ReadAsStringAsync();           
 
             return new eFirebaseStorageResponse(Content, fURL, Convert.ToInt32(Response.StatusCode));
         }

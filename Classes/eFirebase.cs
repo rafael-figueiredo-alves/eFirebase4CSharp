@@ -4,7 +4,7 @@ namespace eFirebase4CSharp.Classes
 {
     public class eFirebase : IeFirebase
     {
-        private const string eFirebase_version = "0.0.1";
+        private const string eFirebase_version = "1.0.1";
         
         private HttpClient _httpClient;
         

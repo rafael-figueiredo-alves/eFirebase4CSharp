@@ -7,8 +7,11 @@
     <authors>Rafael de Figueiredo Alves</authors>
     <license type="file">LICENSE</license>
     <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <icon>Imagens\eFirebase4CSharpIcon.png</icon>
     <readme>README.md</readme>
+    <projectUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</projectUrl>
     <description>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</description>
+    <releaseNotes>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</releaseNotes>
     <tags>Firebase CSharp Realtime Database Auth Storage eFirebase backend</tags>
     <repository type="git" url="https://github.com/rafael-figueiredo-alves/eFirebase4CSharp" />
     <dependencies>
@@ -17,7 +20,7 @@
   </metadata>
   <files>
     <file src="C:\MeusProjetos\eFirebase4CSharp\bin\Debug\net7.0\eFirebase4CSharp.dll" target="lib\net7.0\eFirebase4CSharp.dll" />
-    <file src="C:\MeusProjetos\eFirebase4CSharp\Imagens\Icon 128.png" target="\Imagens\Icon 128.png" />
+    <file src="C:\MeusProjetos\eFirebase4CSharp\Imagens\eFirebase4CSharpIcon.png" target="\Imagens\eFirebase4CSharpIcon.png" />
     <file src="C:\MeusProjetos\eFirebase4CSharp\LICENSE" target="\LICENSE" />
     <file src="C:\MeusProjetos\eFirebase4CSharp\README.md" target="\README.md" />
   </files>
