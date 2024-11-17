@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -9,8 +9,8 @@
     <Authors>Rafael de Figueiredo Alves</Authors>
     <Company>Rafael de Figueiredo Alves</Company>
     <Description>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</Description>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
+    <AssemblyVersion>1.2.0</AssemblyVersion>
+    <FileVersion>1.2.0</FileVersion>
     <PackageIcon>Imagens\eFirebase4CSharpIcon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</RepositoryUrl>
@@ -19,7 +19,7 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <SignAssembly>False</SignAssembly>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <PackageProjectUrl>https://github.com/rafael-figueiredo-alves/eFirebase4CSharp</PackageProjectUrl>
     <PackageReleaseNotes>O eFirebase é uma biblioteca originária para Delphi e Lazarus que estou portando agora para o C# com o objetivo de facilitar o uso do Firebase por minhas aplicações tanto em Pascal (Delphi e Lazarus) como agora em CShap (miha ideia é usar em projeto Blazor WebAssembly)</PackageReleaseNotes>
   </PropertyGroup>
